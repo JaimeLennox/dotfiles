@@ -1,0 +1,54 @@
+set nocompatible
+filetype off
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+
+Plugin 'ambv/black'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'ludovicchabant/vim-gutentags'
+Plugin 'scrooloose/nerdtree'
+Plugin 'tpope/vim-fugitive'
+
+call vundle#end()
+
+filetype plugin indent on
+syntax enable
+
+autocmd FileType gitcommit set textwidth=72
+
+let mapleader ="\<Space>"
+
+nnoremap <Leader>f :NERDTreeToggle<Enter>
+nnoremap <silent> <Leader>v :NERDTreeFind<CR>
+let NERDTreeQuitOnOpen = 1
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+
+let g:black_linelength = 110
+
+let g:ctrlp_custom_ignore = '\v[\/](node_modules\|DS_Store\|__pycache__|\.mypy_cache)a|(\.(swp|git|pyc))$'
+let g:ctrlp_max_files = 0
+let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+if executable('ag')
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+endif
+
+:set tw=110
+:set colorcolumn=+1
+:set nu
+:set bs=2
+:set tabstop=4
+:set shiftwidth=4
+:set expandtab
+:set autoindent
+:set mouse=a
+:set nocompatible
+:set laststatus=2
+:set cursorline
+:set incsearch
+:set hlsearch
+:set clipboard=unnamedplus

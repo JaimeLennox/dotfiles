@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+
+export EDITOR='vim'
+
+function awsnames {
+    aws ec2 describe-instances \
+        --filters "Name=private-ip-address,Values=$1" \
+        --query 'Reservations[*].Instances[*].[Tags|?Key==`Name`].Value]'
+}
+
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/Devel
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+source $HOME/.local/bin/virtualenvwrapper.sh
+
+alias watchkube='watch -n 0.5 kubectl get pod'
+
+# direnv
+eval "$(direnv hook zsh)"
+
+source <(kubectl completion zsh)
+source <(helm completion zsh)
+
+export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
