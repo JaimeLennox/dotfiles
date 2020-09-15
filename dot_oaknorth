@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+docker_login() {
+    aws ecr get-login-password | \
+    docker login --username AWS --password-stdin "$1.dkr.ecr.${AWS_REGION}.amazonaws.com"
+}
+
+daily() {
+    AZURE_DEFAULT_ROLE_ARN="arn:aws:iam::556645705711:role/SSOAdminAccessRole" aws-azure-login --no-prompt
+    AWS_REGION=us-east-1 AWS_PROFILE=platform-infrastructure docker_login 411980747634
+    AWS_REGION=eu-west-1 AWS_PROFILE=platform-infrastructure docker_login 411980747634
+}
+
+
+alias work='cd ~/work'
+alias docker_login=docker_login
+alias daily=daily
