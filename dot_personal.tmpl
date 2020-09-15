@@ -10,8 +10,13 @@ function awsnames {
 
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Devel
+{{- if eq .chezmoi.os "darwin" }}
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
+source /usr/local/bin/virtualenvwrapper.sh
+{{- else }}
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
 source $HOME/.local/bin/virtualenvwrapper.sh
+{{- end }}
 
 alias watchkube='watch -n 0.5 kubectl get pod'
 
