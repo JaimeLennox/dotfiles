@@ -12,6 +12,7 @@ export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Devel
 {{- if eq .chezmoi.os "darwin" }}
 export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
+export VIRTUALENVWRAPPER_VIRTUALENV=$HOME/Library/Python/3.8/bin/virtualenv
 source /usr/local/bin/virtualenvwrapper.sh
 {{- else }}
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
