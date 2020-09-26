@@ -8,6 +8,13 @@ function awsnames {
         --query 'Reservations[*].Instances[*].[Tags|?Key==`Name`].Value]'
 }
 
+function awsrole {
+    credentials="$(aws sts assume-role --role-arn $1 --role-session-name jaime-dev)"
+    export AWS_ACCESS_KEY_ID="$(echo $credentials | jq -r .Credentials.AccessKeyId)"
+    export AWS_SECRET_ACCESS_KEY="$(echo $credentials | jq -r .Credentials.SecretAccessKey)"
+    export AWS_SESSION_TOKEN="$(echo $credentials | jq -r .Credentials.SessionToken)"
+}
+
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Devel
 {{- if eq .chezmoi.os "darwin" }}
@@ -20,6 +27,7 @@ source $HOME/.local/bin/virtualenvwrapper.sh
 {{- end }}
 
 alias watchkube='watch -n 0.5 kubectl get pod'
+alias awsrole=awsrole
 
 # direnv
 eval "$(direnv hook zsh)"
