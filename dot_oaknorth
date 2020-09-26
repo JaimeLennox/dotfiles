@@ -6,6 +6,7 @@ docker_login() {
 }
 
 daily() {
+    ssh-add "$HOME/.ssh/id_rsa"
     AZURE_DEFAULT_ROLE_ARN="arn:aws:iam::556645705711:role/SSOAdminAccessRole" aws-azure-login --no-prompt
     AWS_REGION=us-east-1 AWS_PROFILE=platform-infrastructure docker_login 411980747634
     AWS_REGION=eu-west-1 AWS_PROFILE=platform-infrastructure docker_login 411980747634
