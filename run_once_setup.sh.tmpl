@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+
+echo "Starting setup..."
+
+# APT
+
+PACKAGES=(
+    curl
+    git
+    zsh
+)
+
+{{- if eq .chezmoi.os "linux" }}
+echo "Updating and installing APT packages..."
+sudo apt-get update
+sudo apt-get install -y "${PACKAGES[@]}"
+{{- end }}
+
+# Snap
+
+SNAPS=(
+    "android-studio --classic"
+    "intellij-idea-community --classic"
+    "pycharm-community --classic"
+    "slack --classic"
+    "spotify"
+    "vlc"
+    "zoom-client"
+)
+
+{{- if eq .chezmoi.os "linux" }}
+echo "Installing snaps..."
+for app in "${SNAPS[@]}"; do
+    sudo snap install $app
+done
+{{- end }}
+
+# Brew
+
+if ! command -v brew; then
+    echo "Installing brew..."
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+else
+    echo "Brew is already installed."
+fi
+{{- if eq .chezmoi.os "linux" }}
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+{{- end }}
+
+FORMULAE=(
+    antigen
+    awscli
+    ctags
+    curl
+    direnv
+    git
+    go
+    helm
+    kubectl
+    pyenv
+    python
+    vim
+    wget
+    yq
+    zsh
+)
+CASKS=(
+    homebrew/cask/spotify
+)
+
+echo "Installing brew formulae..."
+brew install "${FORMULAE[@]}"
+
+{{- if eq .chezmoi.os "darwin" }}
+echo "Installing brew casks..."
+brew install --cask "${CASKS[@]}"
+{{- end }}
+
+# PYTHON
+
+PIP_PACKAGES=(
+    virtualenvwrapper
+)
+
+echo "Installing pip packages..."
+pip3 install --user virtualenvwrapper
+
+# VIM
+
+vundledir=~/.vim/bundle/Vundle.vim
+if [[ ! -d "${vundledir}" ]]; then
+    echo "Installing vim Vundle..."
+    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+else
+    echo "Vundle is already installed."
+fi
+vim +PluginInstall +quit +quit
+
+# ZSH
+
+ZSH= sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+if [[ "$(basename ${SHELL})" != "zsh" ]]; then
+    echo "Current default shell is ${SHELL}; switching to zsh."    
+    chsh -s $(which zsh)
+fi
+p10kdir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+if [[ ! -d "${p10kdir}" ]]; then
+    echo "Installing Powerlevel10k..."
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+else
+    echo "Powerlevel10k is already installed."
+fi
+
+echo "Finished setup."
