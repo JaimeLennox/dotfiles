@@ -36,6 +36,11 @@ for app in "${SNAPS[@]}"; do
     sudo snap install $app
 done
 
+# Brew
+
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+
 # VIM
 
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
