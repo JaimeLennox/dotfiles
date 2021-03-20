@@ -17,12 +17,11 @@ function awsrole {
 
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Devel
+export VIRTUALENVWRAPPER_PYTHON="$(brew --prefix)/bin/python3"
 {{- if eq .chezmoi.os "darwin" }}
-export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
-export VIRTUALENVWRAPPER_VIRTUALENV=$HOME/Library/Python/3.8/bin/virtualenv
+export VIRTUALENVWRAPPER_VIRTUALENV=$(brew --prefix)/lib/3.9/bin/virtualenv
 source /usr/local/bin/virtualenvwrapper.sh
 {{- else }}
-export VIRTUALENVWRAPPER_PYTHON="$(brew --prefix)/bin/python3"
 source $HOME/.local/bin/virtualenvwrapper.sh
 {{- end }}
 
